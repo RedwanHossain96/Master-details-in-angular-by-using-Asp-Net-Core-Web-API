@@ -1,0 +1,28 @@
+.navbar {
+  background-color: #333;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.navbar-logo {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+}
+
+.navbar-nav {
+  list-style: none;
+  display: flex;
+}
+
+  .navbar-nav li {
+    margin-right: 1rem;
+  }
+
+  .navbar-nav a {
+    color: white;
+    text-decoration: none;
+  }

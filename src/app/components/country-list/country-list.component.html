@@ -1,0 +1,59 @@
+<div>
+  <h2>Country List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>ISO2</th>
+        <th>ISO3</th>
+        <th>Total Cities</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let country of countries">
+        <td>{{ country.id }}</td>
+        <td>{{ country.name }}</td>
+        <td>{{ country.iso2 }}</td>
+        <td>{{ country.iso3 }}</td>
+        <td>{{ country.totCities }}</td>
+        <td>
+
+          <button (click)="deleteCountry(country.id)" class="btn btn-danger">Delete</button>
+          <button (click)="editCountry(country)" class="btn btn-warning">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!editingCountry">
+    <h2>Create New Country</h2>
+    <form (submit)="createCountry()">
+      <label for="name">Name:</label>
+      <input type="text" id="name" [(ngModel)]="newCountry.name" name="name" required>
+
+      <label for="iso2">ISO2:</label>
+      <input type="text" id="iso2" [(ngModel)]="newCountry.iso2" name="iso2" required>
+
+      <label for="iso3">ISO3:</label>
+      <input type="text" id="iso3" [(ngModel)]="newCountry.iso3" name="iso3" required>
+
+      <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+  </div>
+  <div *ngIf="editingCountry">
+    <h2>Edit Country</h2>
+    <form (submit)="saveEdit()">
+      <label for="editName">Name:</label>
+      <input type="text" id="editName" [(ngModel)]="editingCountry.name" name="editName" required>
+
+      <label for="editISO2">ISO2:</label>
+      <input type="text" id="editISO2" [(ngModel)]="editingCountry.iso2" name="editISO2" required>
+
+      <label for="editISO3">ISO3:</label>
+      <input type="text" id="editISO3" [(ngModel)]="editingCountry.iso3" name="editISO3" required>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </div>
+
+</div>

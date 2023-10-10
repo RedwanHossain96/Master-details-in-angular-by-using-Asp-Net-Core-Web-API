@@ -1,0 +1,112 @@
+<div class="container">
+  <h2>City List</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Country</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let city of cities">
+        <td>{{ city.id }}</td>
+        <td>{{ city.name }}</td>
+        <td>{{ city.lat }}</td>
+        <td>{{ city.lon }}</td>
+        <td>
+          {{ getCountryName(city.countryId) }}
+        </td>
+        <td>
+          <button class="btn btn-info" (click)="editCity(city)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteCity(city)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container" *ngIf="!editingCity">
+  <h4>Select Country</h4>
+  <form [formGroup]="cityForm" (ngSubmit)="saveCities()">
+    <label for="countryId">Country:</label>
+    <select id="countryId" formControlName="countryId" class="form-control">
+      <option value="0">Create New Country</option>
+      <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+    </select>
+
+
+    <div *ngIf="cityForm.get('countryId')?.value === 0">
+
+      <label for="name">Country Name:</label>
+      <input type="text" formControlName="name" class="form-control" required>
+
+      <label for="iso2">Country ISO2:</label>
+      <input type="text" formControlName="iso2" class="form-control" required>
+
+      <label for="iso3">Country ISO3:</label>
+      <input type="text" formControlName="iso3" class="form-control" required>
+    </div>
+
+
+
+    <hr>
+    <h4>Create City</h4>
+
+
+    <hr>
+    <div formArrayName="cities">
+      <div *ngFor="let city of cityControls; let i = index" class="mb-3">
+        <div [formGroupName]="i" class="border p-3">
+
+
+          <label for="name{{i}}" class="form-label">City Name:</label>
+          <input type="text" id="name{{i}}" formControlName="name" class="form-control">
+          <label for="lat{{i}}" class="form-label">Latitude:</label>
+          <input type="number" id="lat{{i}}" formControlName="lat" class="form-control">
+          <label for="lon{{i}}" class="form-label">Longitude:</label>
+          <input type="number" id="lon{{i}}" formControlName="lon" class="form-control">
+          <button type="button" (click)="removeCity(i)" class="btn btn-danger mt-2">Remove</button>
+        </div>
+      </div>
+    </div>
+    <button type="button" (click)="addCity()" class="btn btn-success">Add New City</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+
+
+  </form>
+</div>
+
+<div class="container mt-4" *ngIf="editingCity">
+  <h2>Edit City</h2>
+  <form (submit)="saveEdit()">
+    <div class="class border">
+      <label for="editName" class="form-label">Name:</label>
+      <input type="text" class="form-control" id="editName" [(ngModel)]="editingCity.name" name="editName" required>
+
+      <label for="editLat" class="form-label">Latitude:</label>
+      <input type="number" class="form-control" id="editLat" [(ngModel)]="editingCity.lat" name="editLat" required>
+
+      <label for="editLon" class="form-label">Longitude:</label>
+      <input type="number" class="form-control" id="editLon" [(ngModel)]="editingCity.lon" name="editLon" required>
+
+
+      <label for="editCountryId" class="form-label">Country:</label>
+      <select id="editCountryId" [(ngModel)]="editingCity.countryId" name="editCountryId" class="form-control" required>
+        <option value="" disabled>Select a country</option>
+        <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+      </select>
+    </div>
+
+
+
+    <div class="class mt-3">
+      <button type="submit" class="btn btn-success">Save</button>
+      <button type="button" class="btn btn-danger" (click)="cancelEdit()">Cancel</button>
+    </div>
+
+  </form>
+</div>
